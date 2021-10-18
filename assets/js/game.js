@@ -9,20 +9,20 @@ var playerHealth = 100;
 var playerAttack = 10; 
 var playerMoney = 10; 
 
-// you can also log multiple values at one like this
-console.log(playerName, playerHealth, playerAttack); 
-
 var enemyNames = ["Roborto", "Amy Android", "Robo Trumble"];
 var enemyHealth = 50; 
 var enemyAttack = 12; 
 
+console.log(enemyNames);
+console.log(enemyNames.length);
+console.log(enemyNames[0]);
+console.log(enemyNames[3]);
 
 
 //Fight function
 var fight = function(enemyName) {
     //repeat and execute as long as the enemy-robot is alive
     while(playerHealth > 0 && enemyHealth > 0) {
-
          //ask player if they would like to fight or quit
         var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.")
  
@@ -38,7 +38,6 @@ var fight = function(enemyName) {
                 console.log("playerMoney", playerMoney);
                 break;
             }  
-        
         }
         
         //Subtract the value of `playerAttack` from the value of `enemyHealth` and use that result to update the value in the `enemyHealth` variable
@@ -55,8 +54,8 @@ var fight = function(enemyName) {
 
             //leave while() loop since enemy is dead
             break; 
-        } else {
-                window.alert(enemyName + " still has " + enemyHealth + " health left.")
+            } else {
+             window.alert(enemyName + " still has " + enemyHealth + " health left.")
             }
 
             // remove player's health by subtracting the amount set in the enemyAttack variable
@@ -83,15 +82,22 @@ for(var i = 0; i < enemyNames.length; i++) {
 
     //let playere know what round they are in, remember that arrays stay at 0 so it needs to have 1 added to it
     if (playerHealth > 0) {
+
         window.alert("Welcome to Robot Gladiators! Round " + ( i + 1));
-    } else {
+
+        // pick a new enemy  to fight based on the index of the enemyNames array
+        var pickedEnemyName = enemyNames[i];
+        //reset enemy health
+        enemyHealth = 50;
+
+        //pass the pickedEnemyName variable's value into the fight function 
+        fight(pickedEnemyName);
+    }
+
+     else {
         window.alert("You have lost your robot in battle! Game Over!")
         break;
     }
-    // pick a new enemy  to fight based on the index of the enemyNames array
-    var pickedEnemyName = enemyNames[i];
-    //reset enemy health
-    enemyHealth = 50;
-    //pass the pickedEnemyName variable's value into the fight function 
-    fight(pickedEnemyName);
+    
 }
+    
