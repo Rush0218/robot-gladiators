@@ -12,10 +12,13 @@ var fightOrSkip = function() {
     //enter conditional recursive function call here
     if (promptFight === "" || promptFight === null) {
         window.alert("You need to provide a valid answer! Please try again.");
+        //use return to call fucntion again if not given a correct response.
         return fightOrSkip();
     }
 
+    //convert promptFight to all lowercase so we can check with less options
     promptFight = promptFight.toLowerCase(); 
+
     //if player picks "skip" confrim and then stop loop
     if (promptFight === "skip") {
         //confirm player wants to skip
@@ -24,19 +27,19 @@ var fightOrSkip = function() {
         //if yes (true) leave fight
         if (confirmSkip) {
             window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!"); 
-            //subtract money from playerInfo.money for skipping
+            //subtract money from playerInfo.money for skipping but do not let them go into negative
             playerInfo.money = Math.max(0, playerInfo.money - 10); 
             
             //return true if player wants to leave
             return true; 
-        } else {
-            return false; 
         }
     } 
+    return false;
 }; 
 
 //Fight function
 var fight = function(enemy) {
+    //keep track of who attacks first
     var isPlayerTurn = true; 
 
     if(Math.random() > 0.5) {
@@ -116,6 +119,8 @@ var startGame = function() {
             //set health for picked enemy from array
             pickedEnemyObj.health = randomNumber(40, 60); 
 
+            console.log(pickedEnemyObj); 
+
             //pass the pickedEnemyName variable's value into the fight function 
             fight(pickedEnemyObj);
 
@@ -141,13 +146,22 @@ var startGame = function() {
 
 
 var endGame = function() {
-    // if player is still alive, player wins!
-    if (playerInfo.health > 0) {
-        window.alert("Great job, you've survived the game! You now have a score of " + playerInfo.money + ".");
+    window.alert("The game has now ended. Let's see how you did!"); 
+
+    var highScore = localStorage.getItem("highscore"); 
+    if(highScore === null) {
+        highScore = 0; 
     }
-    else {
-        window.alert("You've lost your robot in battle!");
+
+    if(playerInfo.money > highScore) {
+        localStorage.setItem("highscore", playerInfo.money); 
+        localStorage.setItem("name", playerInfo.name); 
+
+        alert(playerInfo.name + " now has the highscore of " + playerInfo.money + "!"); 
+    } else {
+        alert(playerInfo.name + " did not beat the highscore of " + highScore + ". Maybe next time!"); 
     }
+
     //ask player if they'd like to play again
     var playAgainConfirm = window.confirm ("Would you like to play again?");
 
@@ -193,6 +207,8 @@ var getPlayerName = function() {
     while(name === "" || name === null) {
         name = prompt("What is your robot's name?"); 
     }
+    console.log("Your robot's name is " + name);
+    return name; 
 };
 
 //player object information 
